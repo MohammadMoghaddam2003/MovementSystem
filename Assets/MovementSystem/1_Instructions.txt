@@ -1,0 +1,4 @@
+Assign the "MovementController" script to your object that you want to move.
+
+**** Note : if in editor, mouse movement is not working, go to "Edit/Project Setting/Input Manager/"
+     then open Axis and open Horizontal and change Type to "Mouse Movement".

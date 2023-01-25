@@ -1,0 +1,6 @@
+Assign the "MovementController" script to your object that you want to move.
+
+I am Mohammad Moqaddam, the developer of this movement.
+I would be happy if you have any feedback about it just tell me, so I will improve it.
+
+My linkedin : https://www.linkedin.com/in/mohammad-moqaddam-50a7371b6

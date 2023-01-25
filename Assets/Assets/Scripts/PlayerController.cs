@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (MovementController.Moving)
+        if (MovementController.GetIsMoving)
         {
             _animator.SetFloat("Speed" , 1);
         }

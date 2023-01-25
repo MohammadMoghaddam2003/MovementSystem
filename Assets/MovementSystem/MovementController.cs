@@ -67,11 +67,11 @@ public class MovementController :  MonoBehaviour
     private float _delayManage;
     private float _xAxis;
     private bool _setDefaultSpeed;
+    private static bool _moving;
 
-    
+
     public static bool LuckMoveAround;
     public static bool LuckMovement;
-    public static bool Moving;
 
 
     #endregion
@@ -103,7 +103,7 @@ public class MovementController :  MonoBehaviour
     
     private void Update()
     {
-        if (!Moving && automaticMoveForward)
+        if (!_moving && automaticMoveForward)
         {
             MovementStatusManager();
         }
@@ -371,16 +371,18 @@ public class MovementController :  MonoBehaviour
 
     private void MovementStatusManager()
     {
-        if (Moving && !automaticMoveForward)
+        if (_moving && !automaticMoveForward)
         {
-            Moving = false;
+            _moving = false;
         }
-        else if(!Moving)
+        else if(!_moving)
         {
-            Moving = true;
+            _moving = true;
         }
     }
-    
+
+
+    public static bool GetIsMoving { get { return _moving; } }
     
     
     #endregion

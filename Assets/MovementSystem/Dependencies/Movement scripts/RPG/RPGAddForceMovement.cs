@@ -3,32 +3,40 @@ using UnityEngine;
 public class RPGAddForceMovement : MovementTypeController
 {
     private float _rotationValue;
-    
-    
-    public override void AutomaticMovement(Rigidbody movableObjectRigidbody, ref float speed, ref float moveXAxis, ref float moveZAxis)
+    private float _speed;
+    private Rigidbody _rigidbody;
+
+    public RPGAddForceMovement(MovementController movementController) : base(movementController)
     {
-        Move(movableObjectRigidbody , ref speed, ref moveXAxis, ref moveZAxis);
+        _rigidbody = MovementController.GetMovableObjectRigidbody;
+        _speed = MovementController.GetMoveSpeed;
+    }
+
+    public override void AutomaticMovement()
+    {
+        Move();
     }
 
     
-    public override void NonAutomaticMovement(Rigidbody movableObjectRigidbody, ref float speed, ref float moveXAxis, ref float moveZAxis)
+    public override void NonAutomaticMovement()
     {
         if (Input.GetMouseButton(0))
         {
-            Move(movableObjectRigidbody, ref speed, ref moveXAxis, ref moveZAxis);
+            Move();
         }
     }
   
     
-    private void Move(Rigidbody rigidbody, ref float speed, ref float moveXAxis, ref float moveZAxis)
+    private void Move()
     {
-        rigidbody.AddForce(new Vector3(((moveXAxis * speed) * 200) * Time.fixedDeltaTime, 0,
-            ((moveZAxis * speed) * 200) * Time.fixedDeltaTime));
+        _rigidbody.AddForce(new Vector3(((MovementController.GetMoveXAxis * _speed) * 200) * Time.fixedDeltaTime, 0,
+            ((MovementController.GetMoveZAxis * _speed) * 200) * Time.fixedDeltaTime));
     }
     
 
-    public override void Rotate(Transform rotatingObject, ref float rotateSensitivity, ref float moveXAxis, ref float moveZAxis)
+    public override void Rotate()
     {
-        rotatingObject.LookAt(rotatingObject.position + new Vector3((moveXAxis * rotateSensitivity) * Time.fixedDeltaTime, 0, (moveZAxis * rotateSensitivity) * Time.fixedDeltaTime));
+        RotatingObject.LookAt(RotatingObject.position + new Vector3((MovementController.GetMoveXAxis * RotateSensitivity) * Time.fixedDeltaTime,
+            0, (MovementController.GetMoveZAxis * RotateSensitivity) * Time.fixedDeltaTime));
     }
 }

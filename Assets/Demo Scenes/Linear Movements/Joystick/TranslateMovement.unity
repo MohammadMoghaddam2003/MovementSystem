@@ -140,15 +140,15 @@ MonoBehaviour:
   rotatingObject: {fileID: 7006093885723866049}
   rotateSensitivity: 60
   automaticMoveForward: 0
-  resetVelocity: 1
+  resetVelocity: 0
   MoveMethods: 0
-  ControlInput: 0
+  ControlInput: 1
   defaultRotation: {x: 0, y: 0, z: 0, w: 0}
   resetRotation: 1
-  moveForwardSpeed: 6
-  moveAroundSensitivity: 6
+  moveForwardSpeed: 8
+  moveAroundSensitivity: 20
   moveAroundDelay: 0
-  Clamp: 1
+  Clamp: 0
   min: -4
   max: 4
   moveSpeed: 3
@@ -662,7 +662,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1908645234
 MonoBehaviour:
   m_ObjectHideFlags: 0

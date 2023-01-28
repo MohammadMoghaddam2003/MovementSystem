@@ -77,6 +77,22 @@ public class MovementController :  MonoBehaviour
     #endregion
 
     #endregion
+
+    #region  Properties
+
+    public static bool GetIsMoving { get { return _moving; } }
+    public Transform GetMovableObjectTransform { get { return transform; } }
+    public Transform GetRotatingObject { get { return rotatingObject.transform; } }
+    public Rigidbody GetMovableObjectRigidbody { get { return _rigidbody; } }
+    public Quaternion GetDefaultRotation { get { return defaultRotation; } }
+    public ref float GetMoveAroundSensitivity { get { return ref moveAroundSensitivity; } }
+    public ref float GetMoveForwardSpeed { get { return ref moveForwardSpeed; } }
+    public ref float GetMoveXAxis { get { return ref _moveXAxis; } }
+    public ref float GetMoveZAxis { get { return ref _moveZAxis; } }
+    public ref float GetRotateSensitivity { get { return ref rotateSensitivity; } }
+    public ref float GetMoveSpeed { get { return ref moveSpeed; } }
+
+    #endregion
     
     
     #region Functions
@@ -130,17 +146,17 @@ public class MovementController :  MonoBehaviour
             {
                 case MoveMethod.Translate:
                 {
-                    _movementTypeController = new LinearTranslateMovement();
+                    _movementTypeController = new LinearTranslateMovement(this);
                     break;
                 }
                 case MoveMethod.AddForce:
                 {
-                    _movementTypeController = new LinearAddForceMovement();
+                    _movementTypeController = new LinearAddForceMovement(this);
                     break;
                 }
                 case MoveMethod.Velocity:
                 {
-                    _movementTypeController = new LinearVelocityMovement();
+                    _movementTypeController = new LinearVelocityMovement(this);
                     break;
                 }
             }
@@ -151,17 +167,17 @@ public class MovementController :  MonoBehaviour
             {
                 case MoveMethod.Translate:
                 {
-                    _movementTypeController = new RPGTransformMovement();
+                    _movementTypeController = new RPGTransformMovement(this);
                     break;
                 }
                 case MoveMethod.AddForce:
                 {
-                    _movementTypeController = new RPGAddForceMovement();
+                    _movementTypeController = new RPGAddForceMovement(this);
                     break;
                 }
                 case MoveMethod.Velocity:
                 {
-                    _movementTypeController = new RPGVelocityMovement();
+                    _movementTypeController = new RPGVelocityMovement(this);
                     break;
                 }
             }
@@ -278,61 +294,16 @@ public class MovementController :  MonoBehaviour
     
     private void CallMovements()
     {
-        if (MovementState == MovementState.Linear)
+        if (automaticMoveForward) 
+        { 
+            _movementTypeController.AutomaticMovement(); }
+        else 
         {
-            if (MoveMethods == MoveMethod.Translate)
-            {
-                if (automaticMoveForward)
-                { 
-                    _movementTypeController.AutomaticMovement(transform,ref moveAroundSensitivity,ref moveForwardSpeed,ref _moveXAxis);
-                }
-                else 
-                {
-                    _movementTypeController.NonAutomaticMovement(transform,ref moveAroundSensitivity,ref moveForwardSpeed,ref _moveXAxis);
-                }    
-            }
-            else
-            {
-                if (automaticMoveForward)
-                { 
-                    _movementTypeController.AutomaticMovement(_rigidbody, ref moveAroundSensitivity,ref moveForwardSpeed,ref _moveXAxis);
-                }
-                else 
-                {
-                    _movementTypeController.NonAutomaticMovement(_rigidbody, ref moveAroundSensitivity,ref moveForwardSpeed,ref _moveXAxis);
-                }
-            }
+            _movementTypeController.NonAutomaticMovement();
+        }  
         
         
-            _movementTypeController.Rotate(rotatingObject.transform, defaultRotation, ref rotateSensitivity, ref _moveXAxis);    
-        }
-        else
-        {
-            if (MoveMethods == MoveMethod.Translate)
-            {
-                if (automaticMoveForward)
-                {
-                    _movementTypeController.AutomaticMovement(transform, ref moveSpeed, ref _moveXAxis, ref _moveZAxis);
-                }
-                else
-                {
-                    _movementTypeController.NonAutomaticMovement(transform, ref moveSpeed, ref _moveXAxis, ref _moveZAxis);
-                }
-            }
-            else
-            {
-                if (automaticMoveForward)
-                {
-                    _movementTypeController.AutomaticMovement(_rigidbody, ref moveSpeed, ref _moveXAxis, ref _moveZAxis);
-                }
-                else
-                {
-                    _movementTypeController.NonAutomaticMovement(_rigidbody, ref moveSpeed, ref _moveXAxis, ref _moveZAxis);
-                }
-            }
-            
-            _movementTypeController.Rotate(rotatingObject.transform,  ref rotateSensitivity, ref _moveXAxis, ref _moveZAxis);
-        }
+        _movementTypeController.Rotate();
     }
     
     private void Delay(float value)
@@ -380,10 +351,6 @@ public class MovementController :  MonoBehaviour
             _moving = true;
         }
     }
-
-
-    public static bool GetIsMoving { get { return _moving; } }
-    
     
     #endregion
 }

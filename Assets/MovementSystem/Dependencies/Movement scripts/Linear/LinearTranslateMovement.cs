@@ -3,35 +3,40 @@ using UnityEngine;
 public class LinearTranslateMovement : MovementTypeController
 {
     private float _rotationValue;
-    
-    
-    public override void AutomaticMovement(Transform movableObject, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    private Transform _movableObject;
+
+    public LinearTranslateMovement(MovementController movementController) : base(movementController)
     {
-        Move(movableObject , ref moveAroundSensitivity, ref moveForwardSpeed, ref moveXAxis);
+        _movableObject = MovementController.GetMovableObjectTransform;
+    }
+
+    public override void AutomaticMovement()
+    {
+        Move();
     }
 
     
-    public override void NonAutomaticMovement(Transform movableObject, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    public override void NonAutomaticMovement()
     {
         if (Input.GetMouseButton(0))
         {
-            Move(movableObject, ref moveAroundSensitivity, ref moveForwardSpeed, ref moveXAxis);
+            Move();
         }
     }
   
     
-    private void Move(Transform movableObject, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    private void Move()
     {
-        movableObject.Translate(new Vector3((moveXAxis * moveAroundSensitivity) * Time.fixedDeltaTime,
-            0,  moveForwardSpeed * Time.fixedDeltaTime));
+        _movableObject.Translate(new Vector3((MovementController.GetMoveXAxis * MovementController.GetMoveAroundSensitivity) * Time.fixedDeltaTime,
+            0,  MovementController.GetMoveForwardSpeed * Time.fixedDeltaTime));
     }
     
 
-    public override void Rotate(Transform rotatingObject, Quaternion defaultRotation, ref float rotateSensitivity, ref float moveXAxis)
+    public override void Rotate()
     {
-        if (moveXAxis != 0)
+        if (MovementController.GetMoveXAxis != 0)
         {
-            _rotationValue = Mathf.Lerp(_rotationValue,moveXAxis, 5 * Time.fixedDeltaTime);
+            _rotationValue = Mathf.Lerp(_rotationValue,MovementController.GetMoveXAxis, 5 * Time.fixedDeltaTime);
         }
         else if (_rotationValue > 0)
         {
@@ -42,6 +47,6 @@ public class LinearTranslateMovement : MovementTypeController
             _rotationValue = Mathf.Lerp(_rotationValue, 0, 20f * Time.fixedDeltaTime);
         }
         
-        rotatingObject.rotation = Quaternion.Euler(defaultRotation.x, (defaultRotation.y + _rotationValue) * rotateSensitivity, defaultRotation.z);
+        RotatingObject.rotation = Quaternion.Euler(DefaultRotation.x, (DefaultRotation.y + _rotationValue) * RotateSensitivity, DefaultRotation.z);
     }
 }

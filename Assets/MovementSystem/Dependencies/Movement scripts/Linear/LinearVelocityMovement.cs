@@ -3,35 +3,41 @@ using UnityEngine;
 public class LinearVelocityMovement : MovementTypeController
 {
     private float _rotationValue;
+    private Rigidbody _rigidbody;
+
+    public LinearVelocityMovement(MovementController movementController) : base(movementController)
+    {
+        _rigidbody = MovementController.GetMovableObjectRigidbody;
+    }
 
         
-    public override void AutomaticMovement(Rigidbody movableObjectRigidbody, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    public override void AutomaticMovement()
     {
-        Move(movableObjectRigidbody, ref moveAroundSensitivity, ref moveForwardSpeed, ref moveXAxis);
+        Move();
     }
 
     
-    public override void NonAutomaticMovement(Rigidbody movableObjectRigidbody, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    public override void NonAutomaticMovement()
     {
         if (Input.GetMouseButton(0))
         {
-            Move(movableObjectRigidbody, ref moveAroundSensitivity, ref moveForwardSpeed, ref moveXAxis);
+            Move();
         }
     }
   
     
-    private void Move(Rigidbody rigidbody, ref float moveAroundSensitivity, ref float moveForwardSpeed, ref float moveXAxis)
+    private void Move()
     {
-        rigidbody.velocity = new Vector3(((moveXAxis * moveAroundSensitivity) * 200) * Time.fixedDeltaTime,
-            0,  (moveForwardSpeed * 200) * Time.fixedDeltaTime);
+        _rigidbody.velocity = new Vector3(((MovementController.GetMoveXAxis * MovementController.GetMoveAroundSensitivity) * 200) * Time.fixedDeltaTime,
+            0,  (MovementController.GetMoveForwardSpeed * 200) * Time.fixedDeltaTime);
     }
     
 
-    public override void Rotate(Transform rotatingObject, Quaternion defaultRotation, ref float rotateSensitivity, ref float moveXAxis)
+    public override void Rotate()
     {
-        if (moveXAxis != 0)
+        if (MovementController.GetMoveXAxis != 0)
         {
-            _rotationValue = Mathf.Lerp(_rotationValue,moveXAxis, 5 * Time.fixedDeltaTime);
+            _rotationValue = Mathf.Lerp(_rotationValue,MovementController.GetMoveXAxis, 5 * Time.fixedDeltaTime);
         }
         else if (_rotationValue > 0)
         {
@@ -42,6 +48,6 @@ public class LinearVelocityMovement : MovementTypeController
             _rotationValue = Mathf.Lerp(_rotationValue, 0, 20f * Time.fixedDeltaTime);
         }
         
-        rotatingObject.rotation = Quaternion.Euler(defaultRotation.x, (defaultRotation.y + _rotationValue) * rotateSensitivity, defaultRotation.z);
+        RotatingObject.rotation = Quaternion.Euler(DefaultRotation.x, (DefaultRotation.y + _rotationValue) * RotateSensitivity, DefaultRotation.z);
     }
 }

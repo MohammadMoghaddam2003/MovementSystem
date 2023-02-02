@@ -68,19 +68,19 @@ public class MovementControllerEditor : Editor
         
         #region Common Fields
 
-        _movementState = serializedObject.FindProperty("MovementState");
+        _movementState = serializedObject.FindProperty("movementState");
         _rotatingObject = serializedObject.FindProperty("rotatingObject");
         _joystick = serializedObject.FindProperty("joystick");
         _rotateSensitivity = serializedObject.FindProperty("rotateSensitivity");
         _automaticMoveForward = serializedObject.FindProperty("automaticMoveForward");
         _resetVelocity = serializedObject.FindProperty("resetVelocity");
-        _moveMethods = serializedObject.FindProperty("MoveMethods");
+        _moveMethods = serializedObject.FindProperty("moveMethod");
 
         #endregion
 
         #region Linear Fields
 
-        _controlInput = serializedObject.FindProperty("ControlInput");
+        _controlInput = serializedObject.FindProperty("controlInput");
         
         _defaultRotation = serializedObject.FindProperty("defaultRotation");
         _resetRotation = serializedObject.FindProperty("resetRotation");
@@ -89,7 +89,7 @@ public class MovementControllerEditor : Editor
         _moveAroundSensitivity = serializedObject.FindProperty("moveAroundSensitivity");
         _moveAroundDelay = serializedObject.FindProperty("moveAroundDelay");
 
-        _clamp = serializedObject.FindProperty("Clamp");
+        _clamp = serializedObject.FindProperty("clamp");
         _min = serializedObject.FindProperty("min");
         _max = serializedObject.FindProperty("max");
 
@@ -123,7 +123,7 @@ public class MovementControllerEditor : Editor
         EditorGUILayout.PropertyField(_rotatingObject);
         EditorGUILayout.PropertyField(_movementState);
 
-        if (_movementController.MovementState == MovementState.Linear)
+        if (_movementController.movementState == MovementState.Linear)
         {
             EditorGUILayout.PropertyField(_defaultRotation);
             EditorGUILayout.PropertyField(_rotateSensitivity);
@@ -135,7 +135,7 @@ public class MovementControllerEditor : Editor
             EditorGUILayout.PropertyField(_moveAroundDelay);
             EditorGUILayout.PropertyField(_clamp);
             
-            if (_movementController.Clamp)
+            if (_movementController.clamp)
             {
                 EditorGUILayout.PropertyField(_min);
                 EditorGUILayout.PropertyField(_max);
@@ -143,7 +143,7 @@ public class MovementControllerEditor : Editor
 
 
             EditorGUILayout.PropertyField(_controlInput);
-            if (_movementController.ControlInput == Control.Joystick)
+            if (_movementController.controlInput == Control.Joystick)
             {
                 EditorGUILayout.PropertyField(_joystick);
             }
@@ -151,7 +151,7 @@ public class MovementControllerEditor : Editor
         }
         else
         {
-            _movementController.Clamp = false;
+            _movementController.clamp = false;
             EditorGUILayout.PropertyField(_joystick);
             EditorGUILayout.PropertyField(_rotateSensitivity);
             
@@ -162,7 +162,7 @@ public class MovementControllerEditor : Editor
         
         EditorGUILayout.PropertyField(_moveMethods);
 
-        if (_movementController.MoveMethods != MoveMethod.Translate)
+        if (_movementController.moveMethod != MoveMethod.Translate)
         {
             EditorGUILayout.PropertyField(_resetVelocity);
         }

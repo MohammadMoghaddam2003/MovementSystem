@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public class MovementController :  MonoBehaviour
@@ -7,7 +8,7 @@ public class MovementController :  MonoBehaviour
 
     #region Common fields
     
-    public MovementState MovementState;
+    public MovementState movementState;
 
     
     [SerializeField] private Joystick joystick;
@@ -21,7 +22,7 @@ public class MovementController :  MonoBehaviour
     [SerializeField] private bool resetVelocity;
 
     [Header("Methods Of Character Moving")] 
-    public MoveMethod MoveMethods;
+    public MoveMethod moveMethod;
     
     
     #endregion
@@ -29,7 +30,7 @@ public class MovementController :  MonoBehaviour
     #region Linear movement fields
     
     [Header("Input")]
-    public Control ControlInput;
+    public Control controlInput;
 
     [Header("Rotation Manage")]
     [SerializeField] private Quaternion defaultRotation;
@@ -43,7 +44,7 @@ public class MovementController :  MonoBehaviour
     [SerializeField] private float moveAroundDelay;
     
     [Header("Clamp X Axis Position")]
-    public bool Clamp;
+    public bool clamp;
     [SerializeField] private float min;
     [SerializeField] private float max;
     
@@ -70,8 +71,8 @@ public class MovementController :  MonoBehaviour
     private static bool _moving;
 
 
-    public static bool LuckMoveAround;
-    public static bool LuckMovement;
+    public static bool LockMoveAround;
+    public static bool LockMovement;
 
 
     #endregion
@@ -95,7 +96,7 @@ public class MovementController :  MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!LuckMovement)
+        if (!LockMovement)
         {
             MovementManager();
         }
@@ -124,9 +125,9 @@ public class MovementController :  MonoBehaviour
     
     private void ChooseMovementType()
     {
-        if (MovementState == MovementState.Linear)
+        if (movementState == MovementState.Linear)
         {
-            switch (MoveMethods)
+            switch (moveMethod)
             {
                 case MoveMethod.Translate:
                 {
@@ -147,7 +148,7 @@ public class MovementController :  MonoBehaviour
         }
         else
         {
-            switch (MoveMethods)
+            switch (moveMethod)
             {
                 case MoveMethod.Translate:
                 {
@@ -176,8 +177,8 @@ public class MovementController :  MonoBehaviour
         _xAxis = 0;
         
         _setDefaultSpeed = false;
-        LuckMovement = false;
-        LuckMoveAround = false;
+        LockMovement = false;
+        LockMoveAround = false;
     }
 
     private void ResetVelocity()
@@ -187,9 +188,9 @@ public class MovementController :  MonoBehaviour
     
     private void MovementManager()
     {
-        if (MovementState == MovementState.Linear)
+        if (movementState == MovementState.Linear)
         {
-            if (ControlInput == Control.Touch)
+            if (controlInput == Control.Touch)
             {
                 TouchMovement();
             }
@@ -209,7 +210,7 @@ public class MovementController :  MonoBehaviour
         }
 
 
-        if(Clamp)
+        if(clamp)
         {
             ClampXAxis();
         }
@@ -217,7 +218,7 @@ public class MovementController :  MonoBehaviour
     
     private void TouchMovement()
     {
-        if (!LuckMoveAround && Input.GetMouseButton(0))
+        if (!LockMoveAround && Input.GetMouseButton(0))
         {
             if (moveAroundDelay == 0)
             {
@@ -236,7 +237,7 @@ public class MovementController :  MonoBehaviour
     
     private void JoystickMovement()
     {
-        if (!LuckMoveAround && Input.GetMouseButton(0))
+        if (!LockMoveAround && Input.GetMouseButton(0))
         {
             if (moveAroundDelay == 0)
             {
@@ -255,7 +256,7 @@ public class MovementController :  MonoBehaviour
     {
         if (automaticMoveForward)
         {
-            if (!LuckMoveAround && Input.GetMouseButton(0))
+            if (!LockMoveAround && Input.GetMouseButton(0))
             {
                 _moveXAxis = joystick.Horizontal;
                 _moveZAxis = joystick.Vertical;        
@@ -266,7 +267,7 @@ public class MovementController :  MonoBehaviour
                 _moveZAxis = 1;
             }
         }
-        else if(!LuckMoveAround && Input.GetMouseButton(0))
+        else if(!LockMoveAround && Input.GetMouseButton(0))
         {
             _moveXAxis = joystick.Horizontal;
             _moveZAxis = joystick.Vertical;     
@@ -278,9 +279,9 @@ public class MovementController :  MonoBehaviour
     
     private void CallMovements()
     {
-        if (MovementState == MovementState.Linear)
+        if (movementState == MovementState.Linear)
         {
-            if (MoveMethods == MoveMethod.Translate)
+            if (moveMethod == MoveMethod.Translate)
             {
                 if (automaticMoveForward)
                 { 
@@ -308,7 +309,7 @@ public class MovementController :  MonoBehaviour
         }
         else
         {
-            if (MoveMethods == MoveMethod.Translate)
+            if (moveMethod == MoveMethod.Translate)
             {
                 if (automaticMoveForward)
                 {
